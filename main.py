@@ -12,6 +12,7 @@ class FlashName(Toplevel):
     def __init__(self) -> None:
         super().__init__()
         # Label 
+        self.title("Flash Card Name")
         window_title = Label(self, text = "Name of Flash Card")
         window_title.grid(column=0, row=0, sticky="ew")
 
@@ -25,12 +26,23 @@ class FlashName(Toplevel):
         self.confirm_button.grid(column=0, row = 2, sticky="ew")
 
     def get_flash_name(self):
+        """Get name of flashcard user wants to create if already exists show error message otherwise create txt file"""
+        # Check if flash card folder exists
+        if not os.path.isdir("flashcards"):
+            os.makedirs("flashcards")
+
+        # Get name of clash card
         name_flash = f"{self.name_flash.get()}.txt"
-        if os.path.isfile(name_flash):  
+
+        # Check if name of flash card already exists if so show message
+        if os.path.isfile(f"flashcards\\{name_flash}"):  
             messagebox.showerror(title="ERROR", message="flash card already exists.")
+
+        # Create new flashcard as txt file and destroy window
         else:
-            with open(name_flash, "w"):
+            with open(f"flashcards\\{name_flash}", "w"):
                 pass
+            self.destroy()
 
     
 # Function
